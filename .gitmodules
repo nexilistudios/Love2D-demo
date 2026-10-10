@@ -1,0 +1,3 @@
+[submodule "nexilis"]
+	path = nexilis
+	url = git@github.com:nexilistudios/nexilis.git
