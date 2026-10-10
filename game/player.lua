@@ -1,7 +1,7 @@
 -- SPDX-License-Identifier: MIT
 -- Copyright (C) 2026 Valtteri Viirret
 --
--- Players: the local Mario (full physics + input) and remote Marios (smooth
+-- Players: the local player (full physics + input) and remote players (smooth
 -- interpolation of the positions the server relays). Small and big (and fire)
 -- share the same code; only the hitbox and the sprite set change.
 

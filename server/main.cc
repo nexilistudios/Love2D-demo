@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT
    Copyright (C) 2026 Valtteri Viirret
-   Love2D Platformer Demo - dedicated Nexilis server.
+   Love2D Platformer Demo: Server
 
    The server is a headless Nexilis room server for the multiplayer
    "Love2D Platformer Demo" LÖVE game. It:
@@ -18,9 +18,9 @@
 #include <nexilis/ports.hh>
 #include <nexilis/protocol_manager.hh>
 #include <nexilis/room_data.hh>
+#include <nexilis/server/client_storage.hh>
 #include <nexilis/server/command/command.hh>
 #include <nexilis/server/command/command_result.hh>
-#include <nexilis/server/client_storage.hh>
 #include <nexilis/server/protocol/nxboost/tcp_server.hh>
 #include <nexilis/server/protocol/nxboost/udp_server.hh>
 #include <nexilis/server/room.hh>

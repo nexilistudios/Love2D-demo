@@ -1,6 +1,6 @@
 # Working on Love2D Platformer Demo
 
-This is a multiplayer Super Mario–style platformer: a LÖVE (Lua) client in
+This is a multiplayer Platformer demo: a LÖVE (Lua) client in
 `game/` and a headless C++ relay server in `server/`, talking over the
 [Nexilis](nexilis) library. This file is the entry point for
 anyone (human or agent) changing the game; read it before editing.
@@ -186,5 +186,5 @@ multiplayer session for behavioral changes.
   copy of its LuaJIT binding and inherits that license.
 - Keep the SPDX header (`SPDX-License-Identifier: MIT`) at the top of new game
   source files, and do not strip the existing headers.
-- Super Mario Bros. is a Nintendo trademark; keep the "unaffiliated homage"
+
   framing in user-facing docs.

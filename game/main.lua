@@ -162,8 +162,8 @@ function draw_title()
     g.print(title, (W - font:getWidth(title)) / 2, 60)
 
     g.setColor(1, 1, 1)
-    g.print("Level 1  -  a cooperative Mario-style romp over a Nexilis server",
-        (W - font:getWidth("Level 1  -  a cooperative Mario-style romp over a Nexilis server")) / 2, 92)
+    g.print("Level 1  -  a cooperative platformer romp over a Nexilis server",
+        (W - font:getWidth("Level 1  -  a cooperative platformer romp over a Nexilis server")) / 2, 92)
 
     -- Character preview with a gentle bob.
     local img = Sprites.player(game.char, "big", "idle")

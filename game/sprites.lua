@@ -4,7 +4,7 @@
 -- Procedural pixel-art sprites. Every sprite is defined as an array of strings
 -- (one character per pixel) and baked into LÖVE images at load time. The
 -- player sprites use the palette keys "1" (primary) and "2" (secondary) so a
--- single set of maps can be recoloured for Mario, Luigi, Wario and friends.
+-- single set of maps can be recoloured for different player characters.
 
 local Config = require("config")
 
@@ -194,7 +194,7 @@ local SMALL = {
     },
 }
 
--- Big Mario is 16x32 with a taller torso and bigger legs.
+-- Big player is 16x32 with a taller torso and bigger legs.
 local BIG = {
     idle = {
         "......11111.....",

@@ -1,8 +1,8 @@
 -- SPDX-License-Identifier: MIT
 -- Copyright (C) 2026 Valtteri Viirret
 --
--- The world: one Super Mario-style level shared by every player, the local
--- Mario, the remote Marios, the deterministic enemies, and all the rules that
+-- The world: one platformer level shared by every player, the local
+-- player, the remote players, the deterministic enemies, and all the rules that
 -- connect them. A shared, peer-to-peer world clock drives a fixed 60 Hz
 -- simulation, so every client steps the same ticks in the same order.
 
@@ -49,7 +49,7 @@ function World.new(opts)
     local local_player = Player.new({
         net_id = self.net and self.net.my_id or 0,
         id_str = self.net and self.net.my_id_str or "0",
-        name = opts.name or "Mario",
+        name = opts.name or "Player",
         char = opts.char or 1,
         ["local"] = true,
     })
@@ -267,7 +267,7 @@ function World:read_input()
     local left, right, run, jump = false, false, false, false
 
     if self.chat_active then
-        -- Typing must not move Mario.
+        -- Typing must not move the player.
     elseif self.auto_walk then
         -- Headless integration test driver: run to the right and hop now and
         -- then so blocks and blobs get a workout.
@@ -357,7 +357,7 @@ function World:send_local_state()
     self.net:send_position(p.x, p.y, z)
 end
 
--- Fire Mario throws a fireball. Only the owning client spawns and simulates
+-- Fire player throws a fireball. Only the owning client spawns and simulates
 -- it; the event tells everyone else to spawn an identical one.
 function World:shoot()
     local p = self.local_player
