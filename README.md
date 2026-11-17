@@ -74,6 +74,14 @@ Start the server, then launch one or more clients.
 ./run.sh
 ```
 
+On first start the server generates a persistent TLS identity in `server/tls/`
+and writes its public-key pin to `server/tls/server.pin`. `run.sh` exports that
+path to clients, so local players connect without extra setup. Keep the
+identity across server restarts: regenerating it changes the pin. For a server
+on another machine, copy its pin to the clients through a trusted channel and
+set `NX_SERVER_PIN`. `LPD_TLS_CERT` and `LPD_TLS_KEY` can point the server at
+your own PEM files instead.
+
 `run.sh` copies the LuaJIT binding next to the game (LÖVE has its own virtual
 file system) and launches `love game`.
 
@@ -98,7 +106,12 @@ The client reads a few environment variables:
 | --- | --- |
 | `NX_HOST` | Server address (default `127.0.0.1`). |
 | `NX_PASSWORD` | Server password, if the server requires one. |
+| `NX_SERVER_PIN` | Server public-key pin (default: `server/tls/server.pin`). |
 | `LPD_NAME` | Player name shown to other players. |
+
+The server reads `LPD_PASSWORD` (password-protected mode), `LPD_TLS_CERT` and
+`LPD_TLS_KEY` (PEM paths), plus `LPD_TLS_DIR` / `LPD_TLS_PIN_FILE` to override
+where the generated identity and pin are stored.
 
 ## How multiplayer works
 

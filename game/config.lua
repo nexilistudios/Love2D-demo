@@ -19,6 +19,30 @@ Config.FIXED_DT = 1 / Config.TICKRATE
 Config.SERVER_ADDRESS = os.getenv("NX_HOST") or "127.0.0.1"
 Config.SERVER_PASSWORD = os.getenv("NX_PASSWORD") or "platformer-demo"
 
+-- Nexilis Boost TCP pins the server's public key. The dedicated server writes
+-- server/tls/server.pin on first start; remote clients can set NX_SERVER_PIN
+-- (or NEXILIS_SERVER_PIN) to a pin obtained through a trusted channel.
+local function clean_pin(value)
+    if type(value) ~= "string" then return nil end
+    value = value:match("^%s*(.-)%s*$")
+    if value == "" then return nil end
+    return value
+end
+
+local function read_pin_file(path)
+    if not path or path == "" then return nil end
+    local file = io.open(path, "r")
+    if not file then return nil end
+    local line = file:read("*l")
+    file:close()
+    return clean_pin(line)
+end
+
+Config.SERVER_PUBLIC_KEY_SHA256 = clean_pin(os.getenv("NX_SERVER_PIN"))
+    or clean_pin(os.getenv("NEXILIS_SERVER_PIN"))
+    or read_pin_file(os.getenv("NEXILIS_SERVER_PIN_FILE"))
+    or read_pin_file("server/tls/server.pin")
+
 -- Physics. Tuned to feel close to classic 8/16-bit platformers.
 Config.GRAVITY = 1900
 Config.MAX_FALL_SPEED = 560

@@ -7,6 +7,7 @@
 # Environment variables:
 #   NX_HOST         server address (default 127.0.0.1)
 #   NX_PASSWORD     password, if the server is password protected
+#   NX_SERVER_PIN   server public-key pin (default: server/tls/server.pin)
 #   LPD_NAME      player name shown to other players
 #   LPD_AUTOSTART skip the title screen and connect immediately (testing)
 #   LPD_TEST_SECONDS  quit after N seconds (testing)
@@ -26,5 +27,6 @@ cp -f "$here/nexilis/bindings/lua/nexilis.lua" "$here/game/nexilis.lua"
 
 export NEXILISC_LIBRARY="${NEXILISC_LIBRARY:-$build_dir/libnexilisc.so}"
 export LD_LIBRARY_PATH="$build_dir:${LD_LIBRARY_PATH:-}"
+export NEXILIS_SERVER_PIN_FILE="${NEXILIS_SERVER_PIN_FILE:-$here/server/tls/server.pin}"
 
 exec love "$here/game" "$@"

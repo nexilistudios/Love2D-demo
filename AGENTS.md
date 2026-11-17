@@ -49,7 +49,9 @@ git submodule update --init --recursive
 Boost/OpenSSL instead of the vendored submodule (see `nexilis/AGENTS.md`). If it
 picks the wrong dependencies, that variable is the first thing to check. Reuse
 `nexilis/build` and `server/build` between edits; they do not need rebuilding
-for Lua-only changes.
+for Lua-only changes. **Rerun `./build.sh` whenever the `nexilis` submodule
+revision changes**: the Lua binding calls new C API symbols and stale shared
+libraries will fail at load time.
 
 The game itself is plain Lua and needs no build step.
 
@@ -76,6 +78,7 @@ Client environment variables:
 | --- | --- |
 | `NX_HOST` | Server address (default `127.0.0.1`). |
 | `NX_PASSWORD` | Server password, if the server requires one. |
+| `NX_SERVER_PIN` | Server public-key pin (default: `server/tls/server.pin`, written on first server start). |
 | `LPD_NAME` | Player name; random `PlayerNNNN` if unset. |
 | `LPD_AUTOSTART` | Skip the title screen and connect immediately. |
 | `LPD_TEST_SECONDS` | Quit after N seconds and print a summary (test hook). |
@@ -86,6 +89,12 @@ Client environment variables:
 | `LPD_SCREENSHOT` | Filename to write a PNG screenshot to on exit (test hook). |
 
 The server is skip-auth by default; set `LPD_PASSWORD` to require a password.
+Nexilis Boost TCP now uses certificate TLS with public-key pinning. On first
+start the server generates a persistent identity in `server/tls/` and writes
+its pin to `server/tls/server.pin`; `run.sh` points clients at that file. For a
+remote server, distribute the pin through a trusted channel and set
+`NX_SERVER_PIN` on clients. `LPD_TLS_CERT` / `LPD_TLS_KEY` override the PEM
+paths, and `LPD_TLS_DIR` / `LPD_TLS_PIN_FILE` override the generated paths.
 
 ## How it works
 

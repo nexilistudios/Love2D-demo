@@ -38,6 +38,10 @@ local function num(s)
     return tonumber(s) or 0
 end
 
+local function valid_pin(s)
+    return type(s) == "string" and #s == 64 and s:match("^%x+$") ~= nil
+end
+
 function Net.new(opts)
     opts = opts or {}
     local self = setmetatable({}, Net)
@@ -64,12 +68,20 @@ function Net:connect()
     end
     self.nexilis = nexilis
 
+    local pin = Config.SERVER_PUBLIC_KEY_SHA256
+    if not valid_pin(pin) then
+        self.error = "missing or invalid server public-key pin "
+            .. "(start the server once to generate server/tls/server.pin, or set NX_SERVER_PIN)"
+        return false, self.error
+    end
+
     local this = self
-    local client = nexilis.new({
+    local ok, client = pcall(nexilis.new, {
         server_address = Config.SERVER_ADDRESS,
         password = Config.SERVER_PASSWORD,
         authentication_mode = nexilis.AuthenticationMode.SKIP,
         tls = true,
+        server_public_key_sha256 = pin,
         auto_join = true,
         room_timeout_ms = 6000,
         poll_interval_ms = 40,
@@ -94,15 +106,16 @@ function Net:connect()
         end,
     })
 
-    if not client then
-        self.error = "failed to create nexilis client"
+    if not ok or not client then
+        self.error = "failed to create nexilis client: " .. tostring(client)
         return false, self.error
     end
     self.client = client
 
     local joined, err = client:connect()
     if not joined then
-        self.error = tostring(err or "connection failed")
+        self.error = type(err) == "string" and err
+            or "could not join the shared room (full, denied, or timed out)"
         pcall(function() client:close() end)
         self.client = nil
         return false, self.error

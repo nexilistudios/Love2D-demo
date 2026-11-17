@@ -16,10 +16,27 @@ local nexilis = require("nexilis")
 local name = arg[1] or "smoke"
 local seen = {}
 
+local function read_pin(path)
+    local file = io.open(path, "r")
+    if not file then return nil end
+    local line = file:read("*l")
+    file:close()
+    if not line then return nil end
+    line = line:match("^%s*(.-)%s*$")
+    if line == "" then return nil end
+    return line
+end
+
+local pin = os.getenv("NX_SERVER_PIN") or os.getenv("NEXILIS_SERVER_PIN")
+    or read_pin(os.getenv("NEXILIS_SERVER_PIN_FILE")
+        or (here .. "/../server/tls/server.pin"))
+assert(pin, "no server pin; start the server once or set NX_SERVER_PIN")
+
 local client = nexilis.new({
     server_address = "127.0.0.1",
     password = "password",
     authentication_mode = nexilis.AuthenticationMode.SKIP,
+    server_public_key_sha256 = pin,
     auto_join = false,
     on_ready = function(_, room)
         print(("[%s] joined room %s (%s/%s)"):format(name, room.name,
