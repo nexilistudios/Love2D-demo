@@ -69,6 +69,7 @@ function Net:connect()
         server_address = Config.SERVER_ADDRESS,
         password = Config.SERVER_PASSWORD,
         authentication_mode = nexilis.AuthenticationMode.SKIP,
+        tls = true,
         auto_join = true,
         room_timeout_ms = 6000,
         poll_interval_ms = 40,

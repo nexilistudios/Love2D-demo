@@ -10,11 +10,11 @@ jobs="${JOBS:-$(nproc)}"
 
 echo "==> Building Nexilis libraries"
 # CI=false makes CMake prefer the system Boost / OpenSSL (see nexilis/AGENTS.md).
-CI=false cmake -S "$here/nexilis" -B "$here/nexilis/build" -DCMAKE_BUILD_TYPE=Release
+CI=false cmake -S "$here/nexilis/nexilis" -B "$here/nexilis/build" -DCMAKE_BUILD_TYPE=Release
 cmake --build "$here/nexilis/build" --parallel "$jobs"
 
 echo "==> Building the Love2D Platformer Demo server"
-cmake -S "$here/server" -B "$here/server/build" -DCMAKE_BUILD_TYPE=Release
+CI=false cmake -S "$here/server" -B "$here/server/build" -DCMAKE_BUILD_TYPE=Release
 cmake --build "$here/server/build" --parallel "$jobs"
 
 echo

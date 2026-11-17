@@ -15,9 +15,9 @@ Config.TILE = 16
 Config.TICKRATE = 60
 Config.FIXED_DT = 1 / Config.TICKRATE
 
--- Server defaults (override the host with the NX_HOST env var).
+-- Server defaults (override with NX_HOST / NX_PASSWORD).
 Config.SERVER_ADDRESS = os.getenv("NX_HOST") or "127.0.0.1"
-Config.SERVER_PASSWORD = os.getenv("NX_PASSWORD") or ""
+Config.SERVER_PASSWORD = os.getenv("NX_PASSWORD") or "platformer-demo"
 
 -- Physics. Tuned to feel close to classic 8/16-bit platformers.
 Config.GRAVITY = 1900

@@ -82,10 +82,15 @@ int main(int argc, char** argv)
         settings.setMode(nexilis::server::AuthenticationMode::password_protected);
         settings.setPassphrase(password);
         settings.setRootPassword(password);
+        settings.setTls(true);
     }
     else
     {
+        // Skip auth for the LAN demo, but Nexilis Boost TCP uses TLS-PSK and
+        // needs a shared passphrase to derive the key.
         settings.setMode(nexilis::server::AuthenticationMode::skip);
+        settings.setPassphrase("platformer-demo");
+        settings.setTls(true);
     }
 
     nexilis::ProtocolManager protocol_manager;
@@ -117,6 +122,8 @@ int main(int argc, char** argv)
     // Let rooms overlap players so co-op buddies can stand next to each other
     // without the server rejecting the same coordinates.
     room.setOverlappingAllowed(true);
+    // This demo relays client-authored player positions over UDP.
+    room.setClientPositionAllowed(true);
 
     nexilis::server::RoomStorage::add(std::move(room));
     nexilis::Log::info("Opened room \"Level 1\" (id ", roomId, ")");
