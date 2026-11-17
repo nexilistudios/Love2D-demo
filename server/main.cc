@@ -77,6 +77,10 @@ int main(int argc, char** argv)
     // Set LPD_PASSWORD to require it instead.
     const char* password = std::getenv("LPD_PASSWORD");
     nexilis::server::ServerConfig settings;
+    // This demo relays frequent position/events over chat; avoid tight gameplay
+    // rate limits rejecting legitimate traffic.
+    settings.setMaxCommandRate(0.0f);
+    settings.getGameplayLimits().setMaxBroadcastRate(0.0f);
     if (password && *password)
     {
         settings.setMode(nexilis::server::AuthenticationMode::password_protected);
@@ -112,11 +116,11 @@ int main(int argc, char** argv)
     std::cout << "Press Ctrl+C to stop." << std::endl;
 
     // Pre-create the single shared room so clients auto-join it.
-    // Context::_2D matches the side-scrolling world; the game still uses the
-    // 3D position packets which the relay accepts in any context.
+    // The game uses 3D position packets (z carries packed player state), so the
+    // room uses 3D context even though gameplay is a 2D side-scroller.
     const uint64_t roomId = nexilis::Util::getRandomUint64();
     const nexilis::RoomData roomData(0, "Level 1", roomId,
-                                     nexilis::RoomData::Context::_2D, 12);
+                                     nexilis::RoomData::Context::_3D, 12);
     nexilis::server::Room room(roomData);
 
     // Let rooms overlap players so co-op buddies can stand next to each other
